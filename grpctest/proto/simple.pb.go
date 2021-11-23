@@ -246,19 +246,18 @@ var file_simple_proto_rawDesc = []byte{
 	0x61, 0x22, 0x33, 0x0a, 0x0e, 0x53, 0x74, 0x72, 0x65, 0x61, 0x6d, 0x52, 0x65, 0x73, 0x70, 0x6f,
 	0x6e, 0x73, 0x65, 0x12, 0x21, 0x0a, 0x0c, 0x73, 0x74, 0x72, 0x65, 0x61, 0x6d, 0x5f, 0x76, 0x61,
 	0x6c, 0x75, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0b, 0x73, 0x74, 0x72, 0x65, 0x61,
-	0x6d, 0x56, 0x61, 0x6c, 0x75, 0x65, 0x32, 0x6c, 0x0a, 0x0c, 0x53, 0x74, 0x72, 0x65, 0x61, 0x6d,
-	0x53, 0x65, 0x72, 0x76, 0x65, 0x72, 0x12, 0x2a, 0x0a, 0x05, 0x52, 0x6f, 0x75, 0x74, 0x65, 0x12,
-	0x0e, 0x2e, 0x53, 0x69, 0x6d, 0x70, 0x6c, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a,
-	0x0f, 0x2e, 0x53, 0x69, 0x6d, 0x70, 0x6c, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65,
-	0x22, 0x00, 0x12, 0x30, 0x0a, 0x09, 0x4c, 0x69, 0x73, 0x74, 0x56, 0x61, 0x6c, 0x75, 0x65, 0x12,
-	0x0e, 0x2e, 0x53, 0x69, 0x6d, 0x70, 0x6c, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a,
-	0x0f, 0x2e, 0x53, 0x74, 0x72, 0x65, 0x61, 0x6d, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65,
-	0x22, 0x00, 0x30, 0x01, 0x32, 0x40, 0x0a, 0x0c, 0x53, 0x74, 0x72, 0x65, 0x61, 0x6d, 0x43, 0x6c,
-	0x69, 0x65, 0x6e, 0x74, 0x12, 0x30, 0x0a, 0x09, 0x52, 0x6f, 0x75, 0x74, 0x65, 0x4c, 0x69, 0x73,
-	0x74, 0x12, 0x0e, 0x2e, 0x53, 0x74, 0x72, 0x65, 0x61, 0x6d, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73,
-	0x74, 0x1a, 0x0f, 0x2e, 0x53, 0x69, 0x6d, 0x70, 0x6c, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e,
-	0x73, 0x65, 0x22, 0x00, 0x28, 0x01, 0x42, 0x09, 0x5a, 0x07, 0x2e, 0x3b, 0x70, 0x72, 0x6f, 0x74,
-	0x6f, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x6d, 0x56, 0x61, 0x6c, 0x75, 0x65, 0x32, 0x9c, 0x01, 0x0a, 0x0a, 0x41, 0x6c, 0x6c, 0x53, 0x65,
+	0x72, 0x76, 0x69, 0x63, 0x65, 0x12, 0x2a, 0x0a, 0x05, 0x52, 0x6f, 0x75, 0x74, 0x65, 0x12, 0x0e,
+	0x2e, 0x53, 0x69, 0x6d, 0x70, 0x6c, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x0f,
+	0x2e, 0x53, 0x69, 0x6d, 0x70, 0x6c, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22,
+	0x00, 0x12, 0x30, 0x0a, 0x09, 0x4c, 0x69, 0x73, 0x74, 0x56, 0x61, 0x6c, 0x75, 0x65, 0x12, 0x0e,
+	0x2e, 0x53, 0x69, 0x6d, 0x70, 0x6c, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x0f,
+	0x2e, 0x53, 0x74, 0x72, 0x65, 0x61, 0x6d, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22,
+	0x00, 0x30, 0x01, 0x12, 0x30, 0x0a, 0x09, 0x52, 0x6f, 0x75, 0x74, 0x65, 0x4c, 0x69, 0x73, 0x74,
+	0x12, 0x0e, 0x2e, 0x53, 0x74, 0x72, 0x65, 0x61, 0x6d, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74,
+	0x1a, 0x0f, 0x2e, 0x53, 0x69, 0x6d, 0x70, 0x6c, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73,
+	0x65, 0x22, 0x00, 0x28, 0x01, 0x42, 0x09, 0x5a, 0x07, 0x2e, 0x3b, 0x70, 0x72, 0x6f, 0x74, 0x6f,
+	0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -281,12 +280,12 @@ var file_simple_proto_goTypes = []interface{}{
 	(*StreamResponse)(nil), // 3: StreamResponse
 }
 var file_simple_proto_depIdxs = []int32{
-	0, // 0: StreamServer.Route:input_type -> SimpleRequest
-	0, // 1: StreamServer.ListValue:input_type -> SimpleRequest
-	2, // 2: StreamClient.RouteList:input_type -> StreamRequest
-	1, // 3: StreamServer.Route:output_type -> SimpleResponse
-	3, // 4: StreamServer.ListValue:output_type -> StreamResponse
-	1, // 5: StreamClient.RouteList:output_type -> SimpleResponse
+	0, // 0: AllService.Route:input_type -> SimpleRequest
+	0, // 1: AllService.ListValue:input_type -> SimpleRequest
+	2, // 2: AllService.RouteList:input_type -> StreamRequest
+	1, // 3: AllService.Route:output_type -> SimpleResponse
+	3, // 4: AllService.ListValue:output_type -> StreamResponse
+	1, // 5: AllService.RouteList:output_type -> SimpleResponse
 	3, // [3:6] is the sub-list for method output_type
 	0, // [0:3] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name
@@ -357,7 +356,7 @@ func file_simple_proto_init() {
 			NumEnums:      0,
 			NumMessages:   4,
 			NumExtensions: 0,
-			NumServices:   2,
+			NumServices:   1,
 		},
 		GoTypes:           file_simple_proto_goTypes,
 		DependencyIndexes: file_simple_proto_depIdxs,
@@ -377,38 +376,40 @@ var _ grpc.ClientConnInterface
 // is compatible with the grpc package it is being compiled against.
 const _ = grpc.SupportPackageIsVersion6
 
-// StreamServerClient is the client API for StreamServer service.
+// AllServiceClient is the client API for AllService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
-type StreamServerClient interface {
+type AllServiceClient interface {
 	Route(ctx context.Context, in *SimpleRequest, opts ...grpc.CallOption) (*SimpleResponse, error)
 	//股票
-	ListValue(ctx context.Context, in *SimpleRequest, opts ...grpc.CallOption) (StreamServer_ListValueClient, error)
+	ListValue(ctx context.Context, in *SimpleRequest, opts ...grpc.CallOption) (AllService_ListValueClient, error)
+	//物联网上报
+	RouteList(ctx context.Context, opts ...grpc.CallOption) (AllService_RouteListClient, error)
 }
 
-type streamServerClient struct {
+type allServiceClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewStreamServerClient(cc grpc.ClientConnInterface) StreamServerClient {
-	return &streamServerClient{cc}
+func NewAllServiceClient(cc grpc.ClientConnInterface) AllServiceClient {
+	return &allServiceClient{cc}
 }
 
-func (c *streamServerClient) Route(ctx context.Context, in *SimpleRequest, opts ...grpc.CallOption) (*SimpleResponse, error) {
+func (c *allServiceClient) Route(ctx context.Context, in *SimpleRequest, opts ...grpc.CallOption) (*SimpleResponse, error) {
 	out := new(SimpleResponse)
-	err := c.cc.Invoke(ctx, "/StreamServer/Route", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/AllService/Route", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *streamServerClient) ListValue(ctx context.Context, in *SimpleRequest, opts ...grpc.CallOption) (StreamServer_ListValueClient, error) {
-	stream, err := c.cc.NewStream(ctx, &_StreamServer_serviceDesc.Streams[0], "/StreamServer/ListValue", opts...)
+func (c *allServiceClient) ListValue(ctx context.Context, in *SimpleRequest, opts ...grpc.CallOption) (AllService_ListValueClient, error) {
+	stream, err := c.cc.NewStream(ctx, &_AllService_serviceDesc.Streams[0], "/AllService/ListValue", opts...)
 	if err != nil {
 		return nil, err
 	}
-	x := &streamServerListValueClient{stream}
+	x := &allServiceListValueClient{stream}
 	if err := x.ClientStream.SendMsg(in); err != nil {
 		return nil, err
 	}
@@ -418,16 +419,16 @@ func (c *streamServerClient) ListValue(ctx context.Context, in *SimpleRequest, o
 	return x, nil
 }
 
-type StreamServer_ListValueClient interface {
+type AllService_ListValueClient interface {
 	Recv() (*StreamResponse, error)
 	grpc.ClientStream
 }
 
-type streamServerListValueClient struct {
+type allServiceListValueClient struct {
 	grpc.ClientStream
 }
 
-func (x *streamServerListValueClient) Recv() (*StreamResponse, error) {
+func (x *allServiceListValueClient) Recv() (*StreamResponse, error) {
 	m := new(StreamResponse)
 	if err := x.ClientStream.RecvMsg(m); err != nil {
 		return nil, err
@@ -435,126 +436,30 @@ func (x *streamServerListValueClient) Recv() (*StreamResponse, error) {
 	return m, nil
 }
 
-// StreamServerServer is the server API for StreamServer service.
-type StreamServerServer interface {
-	Route(context.Context, *SimpleRequest) (*SimpleResponse, error)
-	//股票
-	ListValue(*SimpleRequest, StreamServer_ListValueServer) error
-}
-
-// UnimplementedStreamServerServer can be embedded to have forward compatible implementations.
-type UnimplementedStreamServerServer struct {
-}
-
-func (*UnimplementedStreamServerServer) Route(context.Context, *SimpleRequest) (*SimpleResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Route not implemented")
-}
-func (*UnimplementedStreamServerServer) ListValue(*SimpleRequest, StreamServer_ListValueServer) error {
-	return status.Errorf(codes.Unimplemented, "method ListValue not implemented")
-}
-
-func RegisterStreamServerServer(s *grpc.Server, srv StreamServerServer) {
-	s.RegisterService(&_StreamServer_serviceDesc, srv)
-}
-
-func _StreamServer_Route_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(SimpleRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(StreamServerServer).Route(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/StreamServer/Route",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(StreamServerServer).Route(ctx, req.(*SimpleRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _StreamServer_ListValue_Handler(srv interface{}, stream grpc.ServerStream) error {
-	m := new(SimpleRequest)
-	if err := stream.RecvMsg(m); err != nil {
-		return err
-	}
-	return srv.(StreamServerServer).ListValue(m, &streamServerListValueServer{stream})
-}
-
-type StreamServer_ListValueServer interface {
-	Send(*StreamResponse) error
-	grpc.ServerStream
-}
-
-type streamServerListValueServer struct {
-	grpc.ServerStream
-}
-
-func (x *streamServerListValueServer) Send(m *StreamResponse) error {
-	return x.ServerStream.SendMsg(m)
-}
-
-var _StreamServer_serviceDesc = grpc.ServiceDesc{
-	ServiceName: "StreamServer",
-	HandlerType: (*StreamServerServer)(nil),
-	Methods: []grpc.MethodDesc{
-		{
-			MethodName: "Route",
-			Handler:    _StreamServer_Route_Handler,
-		},
-	},
-	Streams: []grpc.StreamDesc{
-		{
-			StreamName:    "ListValue",
-			Handler:       _StreamServer_ListValue_Handler,
-			ServerStreams: true,
-		},
-	},
-	Metadata: "simple.proto",
-}
-
-// StreamClientClient is the client API for StreamClient service.
-//
-// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
-type StreamClientClient interface {
-	//物联网上报
-	RouteList(ctx context.Context, opts ...grpc.CallOption) (StreamClient_RouteListClient, error)
-}
-
-type streamClientClient struct {
-	cc grpc.ClientConnInterface
-}
-
-func NewStreamClientClient(cc grpc.ClientConnInterface) StreamClientClient {
-	return &streamClientClient{cc}
-}
-
-func (c *streamClientClient) RouteList(ctx context.Context, opts ...grpc.CallOption) (StreamClient_RouteListClient, error) {
-	stream, err := c.cc.NewStream(ctx, &_StreamClient_serviceDesc.Streams[0], "/StreamClient/RouteList", opts...)
+func (c *allServiceClient) RouteList(ctx context.Context, opts ...grpc.CallOption) (AllService_RouteListClient, error) {
+	stream, err := c.cc.NewStream(ctx, &_AllService_serviceDesc.Streams[1], "/AllService/RouteList", opts...)
 	if err != nil {
 		return nil, err
 	}
-	x := &streamClientRouteListClient{stream}
+	x := &allServiceRouteListClient{stream}
 	return x, nil
 }
 
-type StreamClient_RouteListClient interface {
+type AllService_RouteListClient interface {
 	Send(*StreamRequest) error
 	CloseAndRecv() (*SimpleResponse, error)
 	grpc.ClientStream
 }
 
-type streamClientRouteListClient struct {
+type allServiceRouteListClient struct {
 	grpc.ClientStream
 }
 
-func (x *streamClientRouteListClient) Send(m *StreamRequest) error {
+func (x *allServiceRouteListClient) Send(m *StreamRequest) error {
 	return x.ClientStream.SendMsg(m)
 }
 
-func (x *streamClientRouteListClient) CloseAndRecv() (*SimpleResponse, error) {
+func (x *allServiceRouteListClient) CloseAndRecv() (*SimpleResponse, error) {
 	if err := x.ClientStream.CloseSend(); err != nil {
 		return nil, err
 	}
@@ -565,43 +470,91 @@ func (x *streamClientRouteListClient) CloseAndRecv() (*SimpleResponse, error) {
 	return m, nil
 }
 
-// StreamClientServer is the server API for StreamClient service.
-type StreamClientServer interface {
+// AllServiceServer is the server API for AllService service.
+type AllServiceServer interface {
+	Route(context.Context, *SimpleRequest) (*SimpleResponse, error)
+	//股票
+	ListValue(*SimpleRequest, AllService_ListValueServer) error
 	//物联网上报
-	RouteList(StreamClient_RouteListServer) error
+	RouteList(AllService_RouteListServer) error
 }
 
-// UnimplementedStreamClientServer can be embedded to have forward compatible implementations.
-type UnimplementedStreamClientServer struct {
+// UnimplementedAllServiceServer can be embedded to have forward compatible implementations.
+type UnimplementedAllServiceServer struct {
 }
 
-func (*UnimplementedStreamClientServer) RouteList(StreamClient_RouteListServer) error {
+func (*UnimplementedAllServiceServer) Route(context.Context, *SimpleRequest) (*SimpleResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Route not implemented")
+}
+func (*UnimplementedAllServiceServer) ListValue(*SimpleRequest, AllService_ListValueServer) error {
+	return status.Errorf(codes.Unimplemented, "method ListValue not implemented")
+}
+func (*UnimplementedAllServiceServer) RouteList(AllService_RouteListServer) error {
 	return status.Errorf(codes.Unimplemented, "method RouteList not implemented")
 }
 
-func RegisterStreamClientServer(s *grpc.Server, srv StreamClientServer) {
-	s.RegisterService(&_StreamClient_serviceDesc, srv)
+func RegisterAllServiceServer(s *grpc.Server, srv AllServiceServer) {
+	s.RegisterService(&_AllService_serviceDesc, srv)
 }
 
-func _StreamClient_RouteList_Handler(srv interface{}, stream grpc.ServerStream) error {
-	return srv.(StreamClientServer).RouteList(&streamClientRouteListServer{stream})
+func _AllService_Route_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SimpleRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AllServiceServer).Route(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/AllService/Route",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AllServiceServer).Route(ctx, req.(*SimpleRequest))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
-type StreamClient_RouteListServer interface {
+func _AllService_ListValue_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(SimpleRequest)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
+	}
+	return srv.(AllServiceServer).ListValue(m, &allServiceListValueServer{stream})
+}
+
+type AllService_ListValueServer interface {
+	Send(*StreamResponse) error
+	grpc.ServerStream
+}
+
+type allServiceListValueServer struct {
+	grpc.ServerStream
+}
+
+func (x *allServiceListValueServer) Send(m *StreamResponse) error {
+	return x.ServerStream.SendMsg(m)
+}
+
+func _AllService_RouteList_Handler(srv interface{}, stream grpc.ServerStream) error {
+	return srv.(AllServiceServer).RouteList(&allServiceRouteListServer{stream})
+}
+
+type AllService_RouteListServer interface {
 	SendAndClose(*SimpleResponse) error
 	Recv() (*StreamRequest, error)
 	grpc.ServerStream
 }
 
-type streamClientRouteListServer struct {
+type allServiceRouteListServer struct {
 	grpc.ServerStream
 }
 
-func (x *streamClientRouteListServer) SendAndClose(m *SimpleResponse) error {
+func (x *allServiceRouteListServer) SendAndClose(m *SimpleResponse) error {
 	return x.ServerStream.SendMsg(m)
 }
 
-func (x *streamClientRouteListServer) Recv() (*StreamRequest, error) {
+func (x *allServiceRouteListServer) Recv() (*StreamRequest, error) {
 	m := new(StreamRequest)
 	if err := x.ServerStream.RecvMsg(m); err != nil {
 		return nil, err
@@ -609,14 +562,24 @@ func (x *streamClientRouteListServer) Recv() (*StreamRequest, error) {
 	return m, nil
 }
 
-var _StreamClient_serviceDesc = grpc.ServiceDesc{
-	ServiceName: "StreamClient",
-	HandlerType: (*StreamClientServer)(nil),
-	Methods:     []grpc.MethodDesc{},
+var _AllService_serviceDesc = grpc.ServiceDesc{
+	ServiceName: "AllService",
+	HandlerType: (*AllServiceServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "Route",
+			Handler:    _AllService_Route_Handler,
+		},
+	},
 	Streams: []grpc.StreamDesc{
 		{
+			StreamName:    "ListValue",
+			Handler:       _AllService_ListValue_Handler,
+			ServerStreams: true,
+		},
+		{
 			StreamName:    "RouteList",
-			Handler:       _StreamClient_RouteList_Handler,
+			Handler:       _AllService_RouteList_Handler,
 			ClientStreams: true,
 		},
 	},

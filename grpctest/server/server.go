@@ -1,8 +1,9 @@
-package server
+package main
 
 import (
 	"context"
 	pb "grpctest/proto"
+	"io"
 	"log"
 	"net"
 	"strconv"
@@ -11,7 +12,7 @@ import (
 	"google.golang.org/grpc"
 )
 
-type StreamService struct{}
+type AllService struct{}
 
 const (
 	Address string = ":8000"
@@ -25,14 +26,14 @@ func main() {
 	}
 	grpcServer := grpc.NewServer()
 	//pb.RegisterSimpleServer(grpcServer, &SimpleService{})
-	pb.RegisterStreamServerServer(grpcServer, &StreamService{})
+	pb.RegisterAllServiceServer(grpcServer, &AllService{})
 	err = grpcServer.Serve(listener)
 	if err != nil {
 		log.Fatalf("grpcserver.serve err:%v", err)
 	}
 }
 
-func (s *StreamService) Route(ctx context.Context, req *pb.SimpleRequest) (*pb.SimpleResponse, error) {
+func (s *AllService) Route(ctx context.Context, req *pb.SimpleRequest) (*pb.SimpleResponse, error) {
 	res := pb.SimpleResponse{
 		Code:  200,
 		Value: "hello," + req.Data,
@@ -40,7 +41,7 @@ func (s *StreamService) Route(ctx context.Context, req *pb.SimpleRequest) (*pb.S
 	return &res, nil
 }
 
-func (s *StreamService) ListValue(req *pb.SimpleRequest, srv pb.StreamServer_ListValueServer) error {
+func (s *AllService) ListValue(req *pb.SimpleRequest, srv pb.AllService_ListValueServer) error {
 	for n := 0; n < 5; n++ {
 		err := srv.Send(&pb.StreamResponse{
 			StreamValue: req.Data + strconv.Itoa(n),
@@ -51,4 +52,17 @@ func (s *StreamService) ListValue(req *pb.SimpleRequest, srv pb.StreamServer_Lis
 		time.Sleep(time.Second * 1)
 	}
 	return nil
+}
+
+func (s *AllService) RouteList(srv pb.AllService_RouteListServer) error {
+	for {
+		res, err := srv.Recv()
+		if err == io.EOF {
+			return srv.SendAndClose(&pb.SimpleResponse{Code: 200, Value: "ok"})
+		}
+		if err != nil {
+			return err
+		}
+		log.Println(res.StreamData)
+	}
 }

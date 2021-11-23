@@ -28,13 +28,11 @@ message StreamResponse{
     string stream_value = 1;
 }
 
-service StreamServer{
+service AllService{
     rpc Route (SimpleRequest) returns (SimpleResponse){};
     //股票
     rpc ListValue(SimpleRequest)returns(stream StreamResponse){};//服务端stream
+    //物联网上报
+    rpc RouteList(stream StreamRequest)returns(SimpleResponse){};//客户端stream
 }
 
-service StreamClient{
-    //物联网上报
-    rpc RouteList(stream StreamRequest)returns(SimpleResponse){};
-}

@@ -1,9 +1,10 @@
-package client
+package main
 
 import (
 	"context"
 	"io"
 	"log"
+	"strconv"
 
 	pb "grpctest/proto"
 
@@ -14,7 +15,7 @@ const (
 	Address string = ":8000"
 )
 
-var grpcClient pb.StreamServerClient
+var grpcClient pb.AllServiceClient
 
 func main() {
 	conn, err := grpc.Dial(Address, grpc.WithInsecure())
@@ -24,9 +25,34 @@ func main() {
 	defer conn.Close()
 
 	//grpcClient = pb.NewSimpleClient(conn)
-	grpcClient = pb.NewStreamServerClient(conn)
-	Route()
-	ListValue()
+	grpcClient = pb.NewAllServiceClient(conn)
+	//Route()
+	//ListValue()
+	RouteList()
+
+}
+
+func RouteList() {
+	stream, err := grpcClient.RouteList(context.Background())
+	if err != nil {
+		log.Fatalf("upload list err %v", err)
+	}
+	for n := 0; n < 5; n++ {
+		err := stream.Send(&pb.StreamRequest{StreamData: "stream client rpc " + strconv.Itoa(n)})
+		//发送也要检测EOF，当服务端在消息没接收完前主动调用SendAndClose()关闭stream，此时客户端还执行Send()，则会返回EOF错误，所以这里需要加上io.EOF判断
+		if err == io.EOF {
+			break
+		}
+		if err != nil {
+			log.Fatalf("stream request err: %v", err)
+		}
+	}
+	//关闭流并获取返回的消息
+	res, err := stream.CloseAndRecv()
+	if err != nil {
+		log.Fatalf("RouteList get response err: %v", err)
+	}
+	log.Println(res)
 
 }
 
