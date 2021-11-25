@@ -19,13 +19,13 @@ message SimpleResponse{
 }
 
 message StreamRequest{
-    string stream_data = 1;
+    string stream_req = 1;
 }
 
 // 定义流式响应信息
 message StreamResponse{
     // 流式响应数据
-    string stream_value = 1;
+    string stream_res = 1;
 }
 
 service AllService{
@@ -34,5 +34,6 @@ service AllService{
     rpc ListValue(SimpleRequest)returns(stream StreamResponse){};//服务端stream
     //物联网上报
     rpc RouteList(stream StreamRequest)returns(SimpleResponse){};//客户端stream
+    // 双向流式rpc，同时在请求参数前和响应参数前加上stream
+    rpc Conversations(stream StreamRequest) returns(stream StreamResponse){};
 }
-

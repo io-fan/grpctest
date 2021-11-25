@@ -38,7 +38,7 @@ func RouteList() {
 		log.Fatalf("upload list err %v", err)
 	}
 	for n := 0; n < 5; n++ {
-		err := stream.Send(&pb.StreamRequest{StreamData: "stream client rpc " + strconv.Itoa(n)})
+		err := stream.Send(&pb.StreamRequest{StreamReq: "stream client rpc " + strconv.Itoa(n)})
 		//发送也要检测EOF，当服务端在消息没接收完前主动调用SendAndClose()关闭stream，此时客户端还执行Send()，则会返回EOF错误，所以这里需要加上io.EOF判断
 		if err == io.EOF {
 			break
@@ -74,7 +74,7 @@ func ListValue() {
 		if err != nil {
 			log.Fatalf("listvlalue get stream err %v", err)
 		}
-		log.Println(res.StreamValue)
+		log.Println(res.StreamRes)
 	}
 	//可以使用CloseSend()关闭stream，这样服务端就不会继续产生流消息
 	//调用CloseSend()后，若继续调用Recv()，会重新激活stream，接着之前结果获取消息

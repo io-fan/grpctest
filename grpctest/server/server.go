@@ -44,7 +44,7 @@ func (s *AllService) Route(ctx context.Context, req *pb.SimpleRequest) (*pb.Simp
 func (s *AllService) ListValue(req *pb.SimpleRequest, srv pb.AllService_ListValueServer) error {
 	for n := 0; n < 5; n++ {
 		err := srv.Send(&pb.StreamResponse{
-			StreamValue: req.Data + strconv.Itoa(n),
+			StreamRes: req.Data + strconv.Itoa(n),
 		})
 		if err != nil {
 			return err
@@ -63,6 +63,8 @@ func (s *AllService) RouteList(srv pb.AllService_RouteListServer) error {
 		if err != nil {
 			return err
 		}
-		log.Println(res.StreamData)
+		log.Println(res.StreamReq)
 	}
 }
+
+func (s *AllService) Conversations(srv pb.AllService_ConversationsServer) {}
