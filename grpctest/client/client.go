@@ -28,7 +28,8 @@ func main() {
 	grpcClient = pb.NewAllServiceClient(conn)
 	//Route()
 	//ListValue()
-	RouteList()
+	//RouteList()
+	ConverSation()
 
 }
 
@@ -54,6 +55,31 @@ func RouteList() {
 	}
 	log.Println(res)
 
+}
+
+func ConverSation() {
+	stream, err := grpcClient.Conversations(context.Background())
+	if err != nil {
+		log.Fatalf("call conversation err:%v", err)
+	}
+	for n := 0; n < 500; n++ {
+		err := stream.Send(&pb.StreamRequest{StreamReq: "from stream client" + strconv.Itoa(n)})
+		if err != nil {
+			log.Fatalf("stream request err: %v", err)
+		}
+		res, err := stream.Recv()
+		if err == io.EOF {
+			break
+		}
+		if err != nil {
+			log.Fatalf("Conversations get stream err: %v", err)
+		}
+		log.Println(res.StreamRes)
+	}
+	err = stream.CloseSend()
+	if err != nil {
+		log.Fatalf("CloseSend err: %v", err)
+	}
 }
 
 //server stream stock

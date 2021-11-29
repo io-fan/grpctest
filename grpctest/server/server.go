@@ -67,4 +67,22 @@ func (s *AllService) RouteList(srv pb.AllService_RouteListServer) error {
 	}
 }
 
-func (s *AllService) Conversations(srv pb.AllService_ConversationsServer) {}
+func (s *AllService) Conversations(srv pb.AllService_ConversationsServer) error {
+	n := 0
+	for {
+		req, err := srv.Recv()
+		if err == io.EOF {
+			return nil
+		}
+		if err != nil {
+			return err
+		}
+		err = srv.Send(&pb.StreamResponse{StreamRes: "from stream server answer: the " + strconv.Itoa(n) + " question is " + req.StreamReq})
+		if err != nil {
+			return err
+		}
+		n++
+		log.Printf("from stream client question: %s", req.StreamReq)
+	}
+
+}
