@@ -2,7 +2,10 @@ package main
 
 import (
 	"context"
+	"crypto/tls"
+	"crypto/x509"
 	"io"
+	"io/ioutil"
 	"log"
 	"strconv"
 	"time"
@@ -11,6 +14,7 @@ import (
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/credentials"
 	"google.golang.org/grpc/status"
 )
 
@@ -21,7 +25,21 @@ const (
 var grpcClient pb.AllServiceClient
 
 func main() {
-	conn, err := grpc.Dial(Address, grpc.WithInsecure())
+	// creds, err := credentials.NewClientTLSFromFile("../pkg/tls/server_ecc.pem", "grpc-tls")
+	// if err != nil {
+	// 	log.Fatalf("failed to create tls credentials %v", err)
+	// }
+	cert, _ := tls.LoadX509KeyPair("../pkg/tls/client.pem", "../pkg/tls/client.key")
+	certPool := x509.NewCertPool()
+	ca, _ := ioutil.ReadFile("../pkg/tls/ca.pem")
+	certPool.AppendCertsFromPEM(ca)
+	creds := credentials.NewTLS(&tls.Config{
+		Certificates: []tls.Certificate{cert},
+		ServerName:   "localhost",
+		RootCAs:      certPool,
+	})
+	//conn, err := grpc.Dial(Address, grpc.WithInsecure())
+	conn, err := grpc.Dial(Address, grpc.WithTransportCredentials(creds))
 	if err != nil {
 		log.Fatalf("grpc dial err:%v", err)
 	}

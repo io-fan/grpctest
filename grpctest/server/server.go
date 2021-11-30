@@ -2,8 +2,11 @@ package main
 
 import (
 	"context"
+	"crypto/tls"
+	"crypto/x509"
 	pb "grpctest/proto"
 	"io"
+	"io/ioutil"
 	"log"
 	"net"
 	"runtime"
@@ -12,6 +15,7 @@ import (
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/credentials"
 	"google.golang.org/grpc/status"
 )
 
@@ -27,9 +31,23 @@ func main() {
 	if err != nil {
 		log.Fatalf("net listen error: %v", err)
 	}
-	grpcServer := grpc.NewServer()
+	// creds, err := credentials.NewServerTLSFromFile("../pkg/tls/server_ecc.pem", "../pkg/tls/server_ecc.key")
+	// if err != nil {
+	// 	log.Fatalf("failed to generate credentials %v", err)
+	// }
+	cert, _ := tls.LoadX509KeyPair("../pkg/tls/server.pem", "../pkg/tls/server.key")
+	certPool := x509.NewCertPool()
+	ca, _ := ioutil.ReadFile("../pkg/tls/ca.pem")
+	certPool.AppendCertsFromPEM(ca)
+	creds := credentials.NewTLS(&tls.Config{
+		Certificates: []tls.Certificate{cert},
+		ClientAuth:   tls.RequireAndVerifyClientCert,
+		ClientCAs:    certPool,
+	})
+	grpcServer := grpc.NewServer(grpc.Creds(creds))
 	//pb.RegisterSimpleServer(grpcServer, &SimpleService{})
 	pb.RegisterAllServiceServer(grpcServer, &AllService{})
+	log.Println(Address + " net.Listing whth TLS and token...")
 	err = grpcServer.Serve(listener)
 	if err != nil {
 		log.Fatalf("grpcserver.serve err:%v", err)
