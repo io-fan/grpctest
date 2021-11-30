@@ -6,10 +6,13 @@ import (
 	"io"
 	"log"
 	"net"
+	"runtime"
 	"strconv"
 	"time"
 
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 )
 
 type AllService struct{}
@@ -34,11 +37,31 @@ func main() {
 }
 
 func (s *AllService) Route(ctx context.Context, req *pb.SimpleRequest) (*pb.SimpleResponse, error) {
-	res := pb.SimpleResponse{
-		Code:  200,
-		Value: "hello," + req.Data,
+	data := make(chan *pb.SimpleResponse, 1)
+	go handle(ctx, req, data)
+	select {
+	case res := <-data:
+		return res, nil
+	case <-ctx.Done():
+		return nil, status.Errorf(codes.Canceled, "client canceled.abandoning")
 	}
-	return &res, nil
+}
+
+func handle(ctx context.Context, req *pb.SimpleRequest, data chan<- *pb.SimpleResponse) {
+	select {
+	case <-ctx.Done():
+		log.Println(ctx.Err())
+		runtime.Goexit() //退出协程
+	case <-time.After(4 * time.Second):
+		res := pb.SimpleResponse{
+			Code:  200,
+			Value: "hello," + req.Data,
+		}
+		//if ctx.err()==context.canceled
+
+		data <- &res
+	}
+
 }
 
 func (s *AllService) ListValue(req *pb.SimpleRequest, srv pb.AllService_ListValueServer) error {

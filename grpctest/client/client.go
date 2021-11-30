@@ -5,10 +5,13 @@ import (
 	"io"
 	"log"
 	"strconv"
+	"time"
 
 	pb "grpctest/proto"
 
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 )
 
 const (
@@ -26,10 +29,13 @@ func main() {
 
 	//grpcClient = pb.NewSimpleClient(conn)
 	grpcClient = pb.NewAllServiceClient(conn)
-	//Route()
+	ctx := context.Background()
+	//Route(ctx, 2)
+	Route(ctx, 6)
+
 	//ListValue()
 	//RouteList()
-	ConverSation()
+	//ConverSation()
 
 }
 
@@ -107,13 +113,24 @@ func ListValue() {
 	stream.CloseSend()
 }
 
-func Route() {
+func Route(ctx context.Context, deadline time.Duration) {
+	clientDeadline := time.Now().Add(time.Duration(deadline * time.Second))
+	ctx, cancel := context.WithDeadline(ctx, clientDeadline)
+	defer cancel()
+
 	req := pb.SimpleRequest{
 		Data: "grpc",
 	}
 
-	res, err := grpcClient.Route(context.Background(), &req)
+	res, err := grpcClient.Route(ctx, &req)
 	if err != nil {
+		state, ok := status.FromError(err)
+		if ok {
+			if state.Code() == codes.DeadlineExceeded {
+				log.Fatalf("call route timeout")
+			}
+
+		}
 		log.Fatalf("call route err %v", err)
 	}
 	log.Println(res)
