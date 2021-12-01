@@ -16,6 +16,7 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/credentials"
+	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
 )
 
@@ -44,8 +45,19 @@ func main() {
 		ClientAuth:   tls.RequireAndVerifyClientCert,
 		ClientCAs:    certPool,
 	})
-	grpcServer := grpc.NewServer(grpc.Creds(creds))
-	//pb.RegisterSimpleServer(grpcServer, &SimpleService{})
+	//普通方法 一元拦截器 grpc.UnaryServerInterceptor，只拦截简单rpc，流式rpc通过grpc.StreamServerInterceptor拦截
+	var interceptor grpc.UnaryServerInterceptor = func(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (resp interface{}, err error) {
+		err = Check(ctx)
+		if err != nil {
+			return nil, err
+		}
+		return handler(ctx, req)
+	}
+	//添加tls认证
+	//grpcServer := grpc.NewServer(grpc.Creds(creds))
+
+	//添加拦截器，增加tls认证和token认证
+	grpcServer := grpc.NewServer(grpc.Creds(creds), grpc.UnaryInterceptor(interceptor))
 	pb.RegisterAllServiceServer(grpcServer, &AllService{})
 	log.Println(Address + " net.Listing whth TLS and token...")
 	err = grpcServer.Serve(listener)
@@ -54,7 +66,34 @@ func main() {
 	}
 }
 
+func Check(ctx context.Context) error {
+	md, ok := metadata.FromIncomingContext(ctx) //从上下文获取元数据
+	if !ok {
+		return status.Errorf(codes.Unauthenticated, "获取client token失败")
+	}
+	var (
+		appID     string
+		appSecret string
+	)
+	if value, ok := md["app_id"]; ok {
+		appID = value[0]
+	}
+	if value, ok := md["app_secret"]; ok {
+		appSecret = value[0]
+	}
+	if appID != "grpc_token" || appSecret != "123456" {
+		return status.Errorf(codes.Unauthenticated, "token无效：app_id=%s,app_secret=%s", appID, appSecret)
+	}
+	return nil
+}
+
 func (s *AllService) Route(ctx context.Context, req *pb.SimpleRequest) (*pb.SimpleResponse, error) {
+	// token验证，添加拦截器
+	// if err := Check(ctx); err != nil {
+	// 	return nil, err
+	// }
+
+	//超时
 	data := make(chan *pb.SimpleResponse, 1)
 	go handle(ctx, req, data)
 	select {

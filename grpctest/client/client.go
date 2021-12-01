@@ -12,6 +12,8 @@ import (
 
 	pb "grpctest/proto"
 
+	"grpctest/pkg/auth"
+
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/credentials"
@@ -23,6 +25,11 @@ const (
 )
 
 var grpcClient pb.AllServiceClient
+
+// type PerRPCCredentials interface {
+// 	GetReuqestMetadata(ctx context.Context, uri ...string) (map[string]string, error) //[]string
+// 	RequireTransportSecurity() bool
+// }
 
 func main() {
 	// creds, err := credentials.NewClientTLSFromFile("../pkg/tls/server_ecc.pem", "grpc-tls")
@@ -38,8 +45,15 @@ func main() {
 		ServerName:   "localhost",
 		RootCAs:      certPool,
 	})
+
+	token := auth.Token{
+		AppID:     "grpc_token",
+		AppSecret: "123456",
+	}
+
 	//conn, err := grpc.Dial(Address, grpc.WithInsecure())
-	conn, err := grpc.Dial(Address, grpc.WithTransportCredentials(creds))
+	//conn, err := grpc.Dial(Address, grpc.WithTransportCredentials(creds))
+	conn, err := grpc.Dial(Address, grpc.WithTransportCredentials(creds), grpc.WithPerRPCCredentials(&token))
 	if err != nil {
 		log.Fatalf("grpc dial err:%v", err)
 	}
