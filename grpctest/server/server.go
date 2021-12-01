@@ -13,6 +13,8 @@ import (
 	"strconv"
 	"time"
 
+	grpc_middleware "github.com/grpc-ecosystem/go-grpc-middleware"
+
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/credentials"
@@ -45,19 +47,38 @@ func main() {
 		ClientAuth:   tls.RequireAndVerifyClientCert,
 		ClientCAs:    certPool,
 	})
-	//普通方法 一元拦截器 grpc.UnaryServerInterceptor，只拦截简单rpc，流式rpc通过grpc.StreamServerInterceptor拦截
-	var interceptor grpc.UnaryServerInterceptor = func(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (resp interface{}, err error) {
-		err = Check(ctx)
-		if err != nil {
-			return nil, err
-		}
-		return handler(ctx, req)
-	}
-	//添加tls认证
+	//2普通方法 一元拦截器 grpc.UnaryServerInterceptor，只拦截简单rpc，流式rpc通过grpc.StreamServerInterceptor拦截
+	// var interceptor grpc.UnaryServerInterceptor = func(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (resp interface{}, err error) {
+	// 	err = Check(ctx)
+	// 	if err != nil {
+	// 		return nil, err
+	// 	}
+	// 	return handler(ctx, req)
+	// }
+	//1添加tls认证
 	//grpcServer := grpc.NewServer(grpc.Creds(creds))
 
-	//添加拦截器，增加tls认证和token认证
-	grpcServer := grpc.NewServer(grpc.Creds(creds), grpc.UnaryInterceptor(interceptor))
+	//2添加拦截器，增加tls认证和token认证
+	//grpcServer := grpc.NewServer(grpc.Creds(creds), grpc.UnaryInterceptor(interceptor))
+
+	grpcServer := grpc.NewServer(grpc.Creds(creds),
+		grpc.StreamInterceptor(grpc_middleware.ChainStreamServer(
+			// grpc_ctxtags.StreamServerInterceptor(),
+			// grpc_opentracing.StreamServerInterceptor(),
+			// grpc_prometheus.StreamServerInterceptor,
+			grpc_middleware.StreamServerInterceptor(zapLogger),
+			grpc_auth.StreamServerInterceptor(myAuthFunction),
+			grpc_recovery.StreamServerInterceptor(),
+		)),
+		grpc.UnaryInterceptor(grpc_middleware.ChainUnaryServer(
+			// grpc_ctxtags.UnaryServerInterceptor(),
+			// grpc_opentracing.UnaryServerInterceptor(),
+			// grpc_prometheus.UnaryServerInterceptor,
+			grpc_zap.UnaryServerInterceptor(zapLogger),
+			grpc_auth.UnaryServerInterceptor(myAuthFunction),
+			grpc_recovery.UnaryServerInterceptor(),
+		)),
+	)
 	pb.RegisterAllServiceServer(grpcServer, &AllService{})
 	log.Println(Address + " net.Listing whth TLS and token...")
 	err = grpcServer.Serve(listener)
