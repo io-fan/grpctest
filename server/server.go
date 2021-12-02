@@ -5,6 +5,9 @@ import (
 	"crypto/tls"
 	"crypto/x509"
 	pb "grpctest/proto"
+	"grpctest/server/middleware/auth"
+	"grpctest/server/middleware/recovery"
+	"grpctest/server/middleware/zap"
 	"io"
 	"io/ioutil"
 	"log"
@@ -14,7 +17,9 @@ import (
 	"time"
 
 	grpc_middleware "github.com/grpc-ecosystem/go-grpc-middleware"
-
+	grpc_auth "github.com/grpc-ecosystem/go-grpc-middleware/auth"
+	grpc_zap "github.com/grpc-ecosystem/go-grpc-middleware/logging/zap"
+	grpc_recovery "github.com/grpc-ecosystem/go-grpc-middleware/recovery"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/credentials"
@@ -66,17 +71,18 @@ func main() {
 			// grpc_ctxtags.StreamServerInterceptor(),
 			// grpc_opentracing.StreamServerInterceptor(),
 			// grpc_prometheus.StreamServerInterceptor,
-			grpc_middleware.StreamServerInterceptor(zapLogger),
-			grpc_auth.StreamServerInterceptor(myAuthFunction),
-			grpc_recovery.StreamServerInterceptor(),
+			grpc_zap.StreamServerInterceptor(zap.ZapInterceptor()),
+			grpc_auth.StreamServerInterceptor(auth.AuthInterceptor),
+			//grpc_recovery.StreamServerInterceptor(),
+			grpc_recovery.StreamServerInterceptor(recovery.RecoveryInterceptor()),
 		)),
 		grpc.UnaryInterceptor(grpc_middleware.ChainUnaryServer(
 			// grpc_ctxtags.UnaryServerInterceptor(),
 			// grpc_opentracing.UnaryServerInterceptor(),
 			// grpc_prometheus.UnaryServerInterceptor,
-			grpc_zap.UnaryServerInterceptor(zapLogger),
-			grpc_auth.UnaryServerInterceptor(myAuthFunction),
-			grpc_recovery.UnaryServerInterceptor(),
+			grpc_zap.UnaryServerInterceptor(zap.ZapInterceptor()),
+			grpc_auth.UnaryServerInterceptor(auth.AuthInterceptor),
+			grpc_recovery.UnaryServerInterceptor(recovery.RecoveryInterceptor()),
 		)),
 	)
 	pb.RegisterAllServiceServer(grpcServer, &AllService{})

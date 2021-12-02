@@ -10,9 +10,8 @@ import (
 	"strconv"
 	"time"
 
+	"grpctest/client/auth"
 	pb "grpctest/proto"
-
-	"grpctest/pkg/auth"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
@@ -46,9 +45,12 @@ func main() {
 		RootCAs:      certPool,
 	})
 
+	// token := auth.Token{
+	// 	AppID:     "grpc_token",
+	// 	AppSecret: "123456",
+	// }
 	token := auth.Token{
-		AppID:     "grpc_token",
-		AppSecret: "123456",
+		Value: "bearer grpc.auth.wrongtoken", //"bearer grpc.auth.token"
 	}
 
 	//conn, err := grpc.Dial(Address, grpc.WithInsecure())
