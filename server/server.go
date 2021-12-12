@@ -20,6 +20,7 @@ import (
 	grpc_auth "github.com/grpc-ecosystem/go-grpc-middleware/auth"
 	grpc_zap "github.com/grpc-ecosystem/go-grpc-middleware/logging/zap"
 	grpc_recovery "github.com/grpc-ecosystem/go-grpc-middleware/recovery"
+	grpc_validator "github.com/grpc-ecosystem/go-grpc-middleware/validator"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/credentials"
@@ -71,6 +72,7 @@ func main() {
 			// grpc_ctxtags.StreamServerInterceptor(),
 			// grpc_opentracing.StreamServerInterceptor(),
 			// grpc_prometheus.StreamServerInterceptor,
+			grpc_validator.StreamServerInterceptor(),
 			grpc_zap.StreamServerInterceptor(zap.ZapInterceptor()),
 			grpc_auth.StreamServerInterceptor(auth.AuthInterceptor),
 			//grpc_recovery.StreamServerInterceptor(),
@@ -80,6 +82,7 @@ func main() {
 			// grpc_ctxtags.UnaryServerInterceptor(),
 			// grpc_opentracing.UnaryServerInterceptor(),
 			// grpc_prometheus.UnaryServerInterceptor,
+			grpc_validator.UnaryServerInterceptor(),
 			grpc_zap.UnaryServerInterceptor(zap.ZapInterceptor()),
 			grpc_auth.UnaryServerInterceptor(auth.AuthInterceptor),
 			grpc_recovery.UnaryServerInterceptor(recovery.RecoveryInterceptor()),
@@ -91,6 +94,19 @@ func main() {
 	if err != nil {
 		log.Fatalf("grpcserver.serve err:%v", err)
 	}
+}
+
+func (s *AllService) RouteVali(ctx context.Context, req *pb.InnerMessage) (*pb.OuterMessage, error) {
+	// 添加拦截器后，方法里省略Token认证
+	// //检测Token是否有效
+	// if err := Check(ctx); err != nil {
+	// 	return nil, err
+	// }
+	res := pb.OuterMessage{
+		ImportantString: "hello grpc validator",
+		Inner:           req,
+	}
+	return &res, nil
 }
 
 func Check(ctx context.Context) error {

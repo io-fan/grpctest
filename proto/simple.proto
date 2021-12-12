@@ -1,5 +1,12 @@
 //protoc -I . simple.proto --go_out=plugins=grpc:.
 //protoc --govalidators_out=. --go_out=plugins=grpc:./ ./simple.proto
+/*
+proto_path: 指定了在哪个目录中搜索import中导入的和要编译为.go的proto文件，可以定义多个
+所以添加proto_path就可以了，指定两个地址，一个是import的地址，一个是要编译为.go的proto文件的地址
+在 windows 系统中需要替换 ${GOPATH} 为 %GOPATH% 
+protoc --proto_path=. --proto_path=%GOPATH%/pkg/mod --proto_path=%GOPATH%/src --govalidators_out=. --go_out=plugins=grpc:. simple.proto  
+protoc --proto_path=. --proto_path=E:\projects\go\pkg\mod --proto_path=E:\projects\go\src --govalidators_out=. --go_out=plugins=grpc:. simple.proto 
+*/
 syntax = "proto3";// 协议为proto3
 
 option go_package = ".;proto";
