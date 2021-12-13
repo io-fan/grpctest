@@ -91,7 +91,7 @@ func main() {
 	)
 	pb.RegisterAllServiceServer(grpcServer, &AllService{})
 	log.Println(Address + " net.Listing whth TLS and token...")
-	err = grpcServer.Serve(listener)
+	//err = grpcServer.Serve(listener)
 	// if err != nil {
 	// 	log.Fatalf("grpcserver.serve err:%v", err)
 	// }
@@ -115,6 +115,7 @@ func (s *AllService) RouteVali(ctx context.Context, req *pb.InnerMessage) (*pb.O
 		ImportantString: "hello grpc validator",
 		Inner:           req,
 	}
+	log.Println(req)
 	return &res, nil
 }
 

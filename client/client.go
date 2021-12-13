@@ -174,7 +174,7 @@ func Route(ctx context.Context, deadline time.Duration) {
 func routeVali() {
 	// 创建发送结构体
 	req := pb.InnerMessage{
-		SomeInteger: 101,
+		SomeInteger: 99,
 		SomeFloat:   1,
 	}
 	// 调用我们的服务(Route方法)

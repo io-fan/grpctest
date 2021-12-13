@@ -3,6 +3,7 @@ package gateway
 import (
 	"context"
 	"crypto/tls"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -21,8 +22,9 @@ import (
 // ProvideHTTP 把gRPC服务转成HTTP服务，让gRPC同时支持HTTP
 func ProvideHTTP(endpoint string, grpcServer *grpc.Server) *http.Server {
 	ctx := context.Background()
-	//获取证书
-	creds, err := credentials.NewClientTLSFromFile("../tls/server.pem", "go-grpc-example")
+	//获取证书,{"code":14,"message":"connection error: desc = \"transport: authentication handshake failed: x509: certificate is valid for localhost, *.fwl.com, not go-grpc-example\"","details":[]}
+	creds, err := credentials.NewClientTLSFromFile("../pkg/tls/server.pem", "localhost")
+	//creds, err := credentials.NewClientTLSFromFile("../pkg/tls/server.pem", "go-grpc-example")
 	if err != nil {
 		log.Fatalf("Failed to create TLS credentials %v", err)
 	}
@@ -60,8 +62,11 @@ func grpcHandlerFunc(grpcServer *grpc.Server, otherHandler http.Handler) http.Ha
 
 // getTLSConfig获取TLS配置
 func getTLSConfig() *tls.Config {
-	cert, _ := ioutil.ReadFile("../../pkg/tls/server.pem")
-	key, _ := ioutil.ReadFile("../../pkg/tls/server.key")
+	cert, err := ioutil.ReadFile("../pkg/tls/server.pem")
+	if err != nil {
+		fmt.Printf("cert err %v", err)
+	}
+	key, _ := ioutil.ReadFile("../pkg/tls/server.key")
 	var demoKeyPair *tls.Certificate
 	pair, err := tls.X509KeyPair(cert, key)
 	if err != nil {
