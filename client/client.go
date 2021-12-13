@@ -50,7 +50,7 @@ func main() {
 	// 	AppSecret: "123456",
 	// }
 	token := auth.Token{
-		Value: "bearer grpc.auth.wrongtoken", //"bearer grpc.auth.token"
+		Value: "bearer grpc.auth.token", //"bearer grpc.auth.token"
 	}
 
 	//conn, err := grpc.Dial(Address, grpc.WithInsecure())
@@ -63,13 +63,14 @@ func main() {
 
 	//grpcClient = pb.NewSimpleClient(conn)
 	grpcClient = pb.NewAllServiceClient(conn)
-	ctx := context.Background()
+	//ctx := context.Background()
 	//Route(ctx, 2)
-	Route(ctx, 6)
+	//Route(ctx, 6)
 
 	//ListValue()
 	//RouteList()
 	//ConverSation()
+	routeVali()
 
 }
 
@@ -167,5 +168,21 @@ func Route(ctx context.Context, deadline time.Duration) {
 		}
 		log.Fatalf("call route err %v", err)
 	}
+	log.Println(res)
+}
+
+func routeVali() {
+	// 创建发送结构体
+	req := pb.InnerMessage{
+		SomeInteger: 101,
+		SomeFloat:   1,
+	}
+	// 调用我们的服务(Route方法)
+	// 同时传入了一个 context.Context ，在有需要时可以让我们改变RPC的行为，比如超时/取消一个正在运行的RPC
+	res, err := grpcClient.RouteVali(context.Background(), &req)
+	if err != nil {
+		log.Fatalf("Call Route err: %v", err)
+	}
+	// 打印返回值
 	log.Println(res)
 }

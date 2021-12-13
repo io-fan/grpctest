@@ -1,17 +1,45 @@
 //protoc -I . simple.proto --go_out=plugins=grpc:.
 //protoc --govalidators_out=. --go_out=plugins=grpc:./ ./simple.proto
 /*
-proto_path: 指定了在哪个目录中搜索import中导入的和要编译为.go的proto文件，可以定义多个
-所以添加proto_path就可以了，指定两个地址，一个是import的地址，一个是要编译为.go的proto文件的地址
-在 windows 系统中需要替换 ${GOPATH} 为 %GOPATH% 
-protoc --proto_path=. --proto_path=%GOPATH%/pkg/mod --proto_path=%GOPATH%/src --govalidators_out=. --go_out=plugins=grpc:. simple.proto  
-protoc --proto_path=. --proto_path=E:\projects\go\pkg\mod --proto_path=E:\projects\go\src --govalidators_out=. --go_out=plugins=grpc:. simple.proto 
+simple.proto文件引用了google/api/annotations.proto（来源），先要把它编译了。
+这里是把google/文件夹直接复制到项目中的proto/目录中进行编译。发现annotations.proto引用了google/api/http.proto，那把它也编译了。
+进入annotations.proto所在目录，编译：
+protoc --go_out=plugins=grpc:./ ./http.proto
+protoc --go_out=plugins=grpc:./ ./annotations.proto
 */
+
+/*
+For both the go_package option and the M flag, the value may include an explicit package name separated from the import path by a semicolon.
+For example: "example.com/protos/foo;package_name". This usage is discouraged since the package name will be derived by default from the import path in a reasonable manner.
+
+There is no correlation between the Go import path and the package specifier in the .proto file. 
+The latter is only relevant to the protobuf namespace, while the former is only relevant to the Go namespace. 
+Also, there is no correlation between the Go import path and the .proto import path.
+*/
+
+/*
+cd proto ,vscode setting.json protobuf path is different from go path
+protoc --go_out=plugins=grpc:./google/api/ .\google\api\http.proto
+protoc --go_out=plugins=grpc:./google/api/ .\google\api\annotations.proto
+protoc -I . -I=D:\mygopath\src -I=D:\mygopath\pkg\mod\ --govalidators_out=./ --go_out=plugins=grpc:./ .\simple.proto
+protoc -I . -I=D:\mygopath\src -I=D:\mygopath\pkg\mod\ --grpc-gateway_out=logtostderr=true:. ./simple.proto
+
+*/
+
 syntax = "proto3";// 协议为proto3
 
-option go_package = ".;proto";
+//package fwl.grpcexample;
+option go_package = "./;annotations";
 
+/*
+protoc-gen-go: Go package "." has inconsistent names annotations (proto/google/api/annotations.proto) and proto (proto/simple.proto)
+--go_out: protoc-gen-go: Plugin failed with status code 1.
+You need to change your option go_package into
+option go_package = "./;pb";
+The first param means relative path where the code you want to generate. The path relative to the --go_out , you set in your command.
+*/
 import "github.com/mwitkow/go-proto-validators/validator.proto";
+import "google/api/annotations.proto";
 
 // 定义发送请求信息
 message SimpleRequest{
@@ -62,5 +90,10 @@ service AllService{
     // 双向流式rpc，同时在请求参数前和响应参数前加上stream
     rpc Conversations(stream StreamRequest) returns(stream StreamResponse){};
 
-    rpc RouteVali (InnerMessage) returns (OuterMessage){};
+    rpc RouteVali (InnerMessage) returns (OuterMessage){
+        option (google.api.http) ={
+            post:"/v1/example/route"
+            body:"*"
+        };
+    };
 }

@@ -5,6 +5,7 @@ import (
 	"crypto/tls"
 	"crypto/x509"
 	pb "grpctest/proto"
+	"grpctest/server/gateway"
 	"grpctest/server/middleware/auth"
 	"grpctest/server/middleware/recovery"
 	"grpctest/server/middleware/zap"
@@ -91,9 +92,17 @@ func main() {
 	pb.RegisterAllServiceServer(grpcServer, &AllService{})
 	log.Println(Address + " net.Listing whth TLS and token...")
 	err = grpcServer.Serve(listener)
-	if err != nil {
-		log.Fatalf("grpcserver.serve err:%v", err)
+	// if err != nil {
+	// 	log.Fatalf("grpcserver.serve err:%v", err)
+	// }
+
+	//使用gateway把grpcServer转成httpServer
+	httpServer := gateway.ProvideHTTP(Address, grpcServer)
+	//用服务器 Serve() 方法以及我们的端口信息区实现阻塞等待，直到进程被杀死或者 Stop() 被调用
+	if err = httpServer.Serve(tls.NewListener(listener, httpServer.TLSConfig)); err != nil {
+		log.Fatal("ListenAndServe: ", err)
 	}
+
 }
 
 func (s *AllService) RouteVali(ctx context.Context, req *pb.InnerMessage) (*pb.OuterMessage, error) {
